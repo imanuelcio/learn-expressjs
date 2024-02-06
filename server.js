@@ -1,8 +1,12 @@
 const express = require("express");
-
+const path = require("path");
 const friendsRouter = require("./routers/friends.router");
 const messagesRouter = require("./routers/messages.router");
 const app = express();
+
+app.set("view engine", "hbs");
+app.set("views", path.join(__dirname, "views"));
+
 const PORT = 8000;
 
 app.use((req, res, next) => {
@@ -14,11 +18,14 @@ app.use((req, res, next) => {
   );
 });
 
-app.use("/public", express.static("public"));
+app.use("/site", express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Hello guys , This is my first express project!!");
+  res.render("index", {
+    title: "Express Testing",
+    caption: "lets goooooo ",
+  });
 });
 
 app.use("/friends", friendsRouter);
